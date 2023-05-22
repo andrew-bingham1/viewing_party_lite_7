@@ -4,9 +4,9 @@ require 'rails_helper'
 
 RSpec.describe 'Welcome Page', type: :feature do
   before(:each) do
-    @user_1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com')
-    @user_2 = User.create!(name: 'Alex Smith', email: 'Asmith@yahoo.com')
-    @user_3 = User.create!(name: 'Elvis Presley', email: 'kingofrock@yahoo.com')
+    @user_1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
+    @user_2 = User.create!(name: 'Alex Smith', email: 'Asmith@yahoo.com', password: 'password123', password_confirmation: 'password123')
+    @user_3 = User.create!(name: 'Elvis Presley', email: 'kingofrock@yahoo.com', password: 'password123', password_confirmation: 'password123')
     visit root_path
   end
 

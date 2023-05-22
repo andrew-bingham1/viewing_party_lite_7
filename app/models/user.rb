@@ -4,6 +4,9 @@ class User < ApplicationRecord
   validates :name, presence: { message: 'must be filled out' }
   validates :email, presence: { message: 'must be filled out' },
                     uniqueness: { message: 'is already taken' }
+                    
+  validates :password, presence: { message: " can't be blank." }
+  has_secure_password
 
   def self.all_except_me(user)
     where.not(id: user.id)
