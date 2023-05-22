@@ -63,7 +63,6 @@ group :development, :test do
   gem 'figaro'
   gem 'faraday'
   gem 'bcrypt'
-  
 end
 
 group :development do
