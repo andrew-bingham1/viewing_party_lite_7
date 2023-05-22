@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
     it { should validate_presence_of(:name).with_message('must be filled out') }
     it { should validate_presence_of(:email).with_message('must be filled out') }
     it { should validate_uniqueness_of(:email).with_message('is already taken') }
+    
     it { should validate_presence_of(:password_digest) }
     it { should have_secure_password}
   end

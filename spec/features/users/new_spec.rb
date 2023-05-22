@@ -76,4 +76,34 @@ RSpec.describe 'Registration Page', type: :feature do
       expect(page).to have_content("Name must be filled out, Email must be filled out, Password digest can't be blank, and Password can't be blank")
     end
   end
+
+  describe 'Auth Challenge - User Story 2' do 
+    it 'will give an error if passwords do not match' do 
+      visit register_path
+
+      within('#new-user-form') do
+        fill_in 'Name', with: 'John Doe'
+        fill_in 'Email', with: 'something@gmail.com'
+        fill_in :password, with: 'password123'
+        fill_in :password_confirmation, with: 'password'
+        click_button 'Create New User'
+      end
+
+      expect(current_path).to eq(register_path)
+      expect(page).to have_content("Passwords do not match")
+    end
+
+    it 'will give an error if password is left blank' do
+      visit register_path
+
+      within('#new-user-form') do
+        fill_in :name, with: 'Some Guy'
+        fill_in :email, with: 'someguy@yahoo.com'
+        click_button 'Create New User'
+      end
+
+      expect(current_path).to eq(register_path)
+      expect(page).to have_content("Password can't be blank")
+    end
+  end
 end
