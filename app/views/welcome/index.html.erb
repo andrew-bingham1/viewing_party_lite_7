@@ -4,6 +4,14 @@
   <% end %>
 </div>
 
+<br>
+
+<div id="button-2" style="text-align: center;">
+  <%= form_tag(login_path, method: :get) do %>
+    <%= submit_tag "Log In"%>
+  <% end %>
+</div>
+
 <div id="existing-users" style="text-align: center;">
   <h2>Existing Users</h2>
     <ul style="display: inline-block; text-align: left; padding-right: 30px;">

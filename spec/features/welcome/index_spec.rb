@@ -42,4 +42,24 @@ RSpec.describe 'Welcome Page', type: :feature do
       expect(current_path).to eq(root_path)
     end
   end
+
+  describe 'Auth Challenge - User Story #3' do
+    it 'has a button to log in' do
+      visit root_path
+
+      within('#button-2') do
+        expect(page).to have_button('Log In')
+      end
+    end
+
+    it 'when I click the button I am taken to a login page' do
+      visit root_path
+
+      within('#button-2') do
+        click_button 'Log In'
+      end
+
+      expect(current_path).to eq(login_path)
+    end
+  end
 end

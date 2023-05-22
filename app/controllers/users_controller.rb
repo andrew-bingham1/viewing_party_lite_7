@@ -18,17 +18,39 @@ class UsersController < ApplicationController
     end
   end
 
-   def show
+  def show
     @user = User.find(params[:id])
     @hosted_parties = ViewingParty.find_hosted_parties(@user)
     @invited_parties = ViewingParty.find_invited_parties(@user)
-    
+  end
+
+  def login_form
+  end
+
+  def login_user
+    user = User.find_by(email: params[:email])
+    if user.nil?
+      record_not_found
+    else
+      if user.authenticate(params[:password])
+        redirect_to user_path(user)
+      else
+        flash[:error] = "Sorry, that password is incorrect"
+        render :login_form
+      end
+    end
+   
   end
 
   private
 
   def user_params
     params.permit(:name, :email, :password, :password_confirmation)
+  end
+
+  def record_not_found
+    flash[:error] = "Sorry, that email is invalid."
+    redirect_to login_path
   end
 
 end
