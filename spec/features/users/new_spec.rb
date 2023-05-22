@@ -16,6 +16,8 @@ RSpec.describe 'Registration Page', type: :feature do
       within('#new-user-form') do
         fill_in 'Name', with: 'John Doe'
         fill_in 'Email', with: 'johndoe@yahoo.com'
+        fill_in :password, with: 'password123'
+        fill_in :password_confirmation, with: 'password123'
         click_button 'Create New User'
       end
 
@@ -47,13 +49,15 @@ RSpec.describe 'Registration Page', type: :feature do
     end
 
     it 'will display an error message if email is already taken' do
-      user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com')
+      user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
 
       visit register_path
 
       within('#new-user-form') do
         fill_in 'Name', with: 'John Doe'
         fill_in 'Email', with: 'johndoe@yahoo.com'
+        fill_in :password, with: 'password123'
+        fill_in :password_confirmation, with: 'password123'
         click_button 'Create New User'
       end
 
@@ -69,7 +73,7 @@ RSpec.describe 'Registration Page', type: :feature do
       end
 
       expect(current_path).to eq(register_path)
-      expect(page).to have_content('Name must be filled out and Email must be filled out')
+      expect(page).to have_content("Name must be filled out, Email must be filled out, Password digest can't be blank, and Password can't be blank")
     end
   end
 end
