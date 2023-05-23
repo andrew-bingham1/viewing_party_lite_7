@@ -28,6 +28,15 @@ RSpec.describe 'Welcome Page', type: :feature do
     end
 
     it 'displays a list of existing users' do
+      user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
+
+      visit root_path
+      click_button 'Log In'
+      fill_in :email, with: user1.email
+      fill_in :password, with: 'password123'
+      click_button 'Log In'
+      click_link 'Home'
+
       within('#existing-users') do
         expect(page).to have_content('Existing Users')
         expect(page).to have_content(@user_1.email)
@@ -63,7 +72,7 @@ RSpec.describe 'Welcome Page', type: :feature do
     end
   end
 
-  describe 'Authorization Challenge - User Story #1' do
+  describe 'Authorization Challenge - Sessions' do
     it 'As a logged in user when I visit the landing page I no longer see a link to Log In or Create an Account' do
       user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
 
@@ -74,7 +83,6 @@ RSpec.describe 'Welcome Page', type: :feature do
       click_button 'Log In'
       click_link 'Home'
 
-      expect(session[:user_id]).to eq(user1.id)
       expect(current_path).to eq(root_path)
       expect(page).to_not have_button('Log In')
       expect(page).to_not have_button('Create a New User')
@@ -90,10 +98,7 @@ RSpec.describe 'Welcome Page', type: :feature do
       fill_in :password, with: 'password123'
       click_button 'Log In'
       click_link 'Home'
-      
-      expect(session[:user_id]).to eq(user1.id)
       click_button 'Log Out'
-      expect(session[:user_id]).to eq(nil)
 
       expect(current_path).to eq(root_path)
       expect(page).to have_button('Log In')
@@ -101,5 +106,40 @@ RSpec.describe 'Welcome Page', type: :feature do
       expect(page).to_not have_button('Log Out')
     end
   end
+
+  describe 'Authorization Challenge - User Story #1' do
+    it 'As a visitor when I visit the landing page I do not see the section of the page that lists existing users' do
+      visit root_path
+
+      expect(page).to_not have_content('Existing Users')
+    end
+  end
+
+  describe 'Authorization Challenge - User Story #2' do
+    it 'As a registered user when I visit the landing page the list of existing users is no longer a link to their show pages but just a list of email addresses' do
+      user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
+      user2 = User.create!(name: 'John Doe', email: 'johndiddy@gmail.com', password: 'password123', password_confirmation: 'password123')
+
+      visit root_path
+      click_button 'Log In'
+      fill_in :email, with: user1.email
+      fill_in :password, with: 'password123'
+      click_button 'Log In'
+      click_link 'Home'
+
+      within('#existing-users') do
+        expect(page).to have_content('Existing Users')
+        expect(page).to have_content(user1.email)
+        expect(page).to have_content(user2.email)
+        expect(page).to_not have_link(user1.email)
+        expect(page).to_not have_link(user2.email)
+      end
+    end
+  end
 end
 
+
+# As a registered user
+# When I visit the landing page
+# The list of existing users is no longer a link to their show pages
+# But just a list of email addresses

@@ -22,11 +22,13 @@
   <% end %>
 </div>
 
-<div id="existing-users" style="text-align: center;">
-  <h2>Existing Users</h2>
-    <ul style="display: inline-block; text-align: left; padding-right: 30px;">
-      <% @users.each do |user| %>
-        <li style="text-align: left;"> <%= link_to "#{user.email}", user_path(user.id) %></li>
-      <% end %>
-    </ul>
-</div>
+<% if session[:user_id].present? %>
+  <div id="existing-users" style="text-align: center;">
+    <h2>Existing Users</h2>
+      <ul style="display: inline-block; text-align: left; padding-right: 30px;">
+        <% @users.each do |user| %>
+          <li style="text-align: left;"> <%= user.email %></li>
+        <% end %>
+      </ul>
+  </div>
+  <% end %>
