@@ -20,9 +20,14 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    @hosted_parties = ViewingParty.find_hosted_parties(@user)
-    @invited_parties = ViewingParty.find_invited_parties(@user)
+    if current_user.nil?
+      flash[:error] = "You must be logged in or registered to access your dashboard"
+      redirect_to root_path
+    else
+      @user = User.find(params[:id])
+      @hosted_parties = ViewingParty.find_hosted_parties(@user)
+      @invited_parties = ViewingParty.find_invited_parties(@user)
+    end
   end
 
   def login_form

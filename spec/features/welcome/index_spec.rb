@@ -136,10 +136,32 @@ RSpec.describe 'Welcome Page', type: :feature do
       end
     end
   end
+
+  describe 'Authorization Challenge - User Story #3' do
+    it 'As a visitor when I visit the user show page I remain on the landing page' do
+      user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
+
+      visit root_path
+      visit user_path(user1)
+
+      expect(current_path).to eq(root_path)
+    end
+
+    it 'And I see a message telling me that I must be logged in or registered to access my dashboard' do
+      user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
+
+      visit root_path
+      visit user_path(user1)
+
+      expect(page).to have_content('You must be logged in or registered to access your dashboard')
+    end
+  end
 end
 
-
-# As a registered user
+# As a visitor
 # When I visit the landing page
-# The list of existing users is no longer a link to their show pages
-# But just a list of email addresses
+# And then try to visit '/dashboard'
+# I remain on the landing page
+# And I see a message telling me that I must be logged in or registered to access my dashboard
+
+
