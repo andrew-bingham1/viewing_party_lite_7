@@ -18,6 +18,7 @@ RSpec.describe 'Movies Details Page', type: :feature do
     end
 
     it 'displays button to create viewing party' do
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user1)
       visit user_movie_path(@user1, 238)
       expect(page).to have_button('Create Viewing Party')
       click_button 'Create Viewing Party'
@@ -146,4 +147,16 @@ RSpec.describe 'Movies Details Page', type: :feature do
       end
     end
   end
+
+  describe 'Authorization Challenge - User Story #4', :vcr do
+    it 'As a visitor, if I go to a movies show page and click the button to create a viewing party, I am redirected to the movies show page, and a message appears to let me know I must be logged in or registered to create a movie party' do
+      @user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
+
+      visit user_movie_path(@user1, 238)
+      click_button 'Create Viewing Party'
+      expect(current_path).to eq(user_movie_path(@user1, 238))
+      expect(page).to have_content('You must be logged in to create a viewing party')
+    end
+  end
 end
+

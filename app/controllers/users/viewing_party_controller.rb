@@ -1,8 +1,13 @@
 class Users::ViewingPartyController < ApplicationController
   def new
-    @facade = MoviesFacade.new(params)
-    @user = User.find(params[:user_id])
-    @users = User.all_except_me(@user)
+    if current_user.nil?
+      flash[:error] = 'You must be logged in to create a viewing party'
+      redirect_to user_movie_path(params[:user_id], params[:id])
+    else
+      @facade = MoviesFacade.new(params)
+      @user = User.find(params[:user_id])
+      @users = User.all_except_me(@user)
+    end
   end
 
  def create
