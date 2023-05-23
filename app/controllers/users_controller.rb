@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if params[:password] != params[:password_confirmation]
       flash[:error] = "Passwords do not match"
-        redirect_to register_path
+      redirect_to register_path
     else
       if @user.save 
         redirect_to user_path(@user)
@@ -39,7 +39,6 @@ class UsersController < ApplicationController
         render :login_form
       end
     end
-   
   end
 
   private
