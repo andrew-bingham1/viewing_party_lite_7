@@ -1,14 +1,24 @@
-<div id="button" style="text-align: center;">
-  <%= form_tag(register_path, method: :get) do %>
-    <%= submit_tag "Create a New User"%>
-  <% end %>
-</div>
+<% if session[:user_id].present? %>
+<% else %>
+  <div id="button" style="text-align: center;">
+    <%= form_tag(register_path, method: :get) do %>
+      <%= submit_tag "Create a New User"%>
+    <% end %>
+  </div>
+<% end %>
 
 <br>
 
-<div id="button-2" style="text-align: center;">
-  <%= form_tag(login_path, method: :get) do %>
-    <%= submit_tag "Log In"%>
+<% if session[:user_id].present? %>
+  <div id="button-2" style="text-align: center;">
+    <%= form_tag(logout_path, method: :get) do %>
+      <%= submit_tag "Log Out"%>
+    <% end %>
+<% else %>
+  <div id="button-2" style="text-align: center;">
+    <%= form_tag(login_path, method: :get) do %>
+      <%= submit_tag "Log In"%>
+    <% end %>
   <% end %>
 </div>
 
