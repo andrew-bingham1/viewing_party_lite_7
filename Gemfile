@@ -62,7 +62,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'figaro'
   gem 'faraday'
-  
+  gem 'bcrypt'
 end
 
 group :development do

@@ -17,5 +17,5 @@ class Movie
     @genres = data[:genres]
     @summary = data[:overview]
     @poster = data[:poster_path]
-  end 
+  end
 end

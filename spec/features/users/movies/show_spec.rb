@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe 'Movies Details Page', type: :feature do
   describe 'User Story #10', :vcr do
     before (:each) do
-      @user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com')
-      @user2 = User.create!(name: 'Jane Doe', email: 'janedoe@yahoo.com')
+      @user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
+      @user2 = User.create!(name: 'Jane Doe', email: 'janedoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
     end
 
     it 'exists' do

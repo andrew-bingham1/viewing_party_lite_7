@@ -1,14 +1,25 @@
+
+
 <div id="button" style="text-align: center;">
-  <%= form_tag(register_path, method: :get) do %>
-    <%= submit_tag "Create a New User"%>
-  <% end %>
+
+    <% if current_user %>
+      <%= link_to "Log Out", logout_path %>
+    <% else %>
+      <%= link_to "Login", login_path%>
+        <%= form_tag(register_path, method: :get) do %>
+        <%= submit_tag "Create a New User"%>
+      <% end %>
+    <% end %>
+
+
+    <br><br>
+
 </div>
 
 <div id="existing-users" style="text-align: center;">
-  <h2>Existing Users</h2>
-    <ul style="display: inline-block; text-align: left; padding-right: 30px;">
-      <% @users.each do |user| %>
-        <li style="text-align: left;"> <%= link_to "#{user.email}", user_path(user.id) %></li>
-      <% end %>
-    </ul>
+  <% if current_admin? %>
+  <%= render partial: 'admin', locals: { users: @users }%>
+  <% elsif current_user %>
+  <%= render partial: 'user', locals: { users: @users } %>
+  <% end %>
 </div>

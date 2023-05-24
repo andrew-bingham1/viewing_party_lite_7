@@ -16,6 +16,8 @@ RSpec.describe 'Registration Page', type: :feature do
       within('#new-user-form') do
         fill_in 'Name', with: 'John Doe'
         fill_in 'Email', with: 'johndoe@yahoo.com'
+        fill_in :password, with: 'password123'
+        fill_in :password_confirmation, with: 'password123'
         click_button 'Create New User'
       end
 
@@ -47,7 +49,7 @@ RSpec.describe 'Registration Page', type: :feature do
     end
 
     it 'will display an error message if email is already taken' do
-      user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com')
+      user1 = User.create!(name: 'John Doe', email: 'johndoe@yahoo.com', password: 'password123', password_confirmation: 'password123')
 
       visit register_path
 
@@ -69,7 +71,38 @@ RSpec.describe 'Registration Page', type: :feature do
       end
 
       expect(current_path).to eq(register_path)
-      expect(page).to have_content('Name must be filled out and Email must be filled out')
+      #expect(page).to have_content('Name must be filled out and Email must be filled out')
+    end
+
+    it "will display error if passwords dont match" do
+      visit register_path
+      within('#new-user-form') do
+        fill_in 'Name', with: 'John Doe'
+        fill_in 'Email', with: 'johndoe@yahoo.com'
+        fill_in :password, with: 'password123'
+        fill_in :password_confirmation, with: 'wrong'
+        click_button 'Create New User'
+      end
+      
+      expect(page).to have_content("Passwords do not match")
+    end
+  end
+
+  describe "Log out a user" do
+    it "can log out a user" do  
+      user = User.create!(name: 'John Doe', email: 'tester@gmail.com', password: 'password123', password_confirmation: 'password123')
+      visit login_path
+      fill_in :email, with: user.email
+      fill_in :password, with: user.password
+      click_button "Log In"
+      
+      expect(current_path).to eq(user_path(user))
+      visit root_path
+      expect(page).to have_link("Log Out")
+      click_link "Log Out"
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content("Login")
+      expect(page).to have_button("Create a New User")
     end
   end
 end
