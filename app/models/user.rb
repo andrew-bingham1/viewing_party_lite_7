@@ -6,7 +6,11 @@ class User < ApplicationRecord
                     uniqueness: { message: 'is already taken' }
                     
   validates :password, presence: { message: " can't be blank." }
+  validates :password_confirmation, presence: { message: " can't be blank." }
+  
   has_secure_password
+
+  enum role: %w(default manager admin)
 
   def self.all_except_me(user)
     where.not(id: user.id)

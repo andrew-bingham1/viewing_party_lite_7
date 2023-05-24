@@ -82,10 +82,27 @@ RSpec.describe 'Registration Page', type: :feature do
         fill_in :password, with: 'password123'
         fill_in :password_confirmation, with: 'wrong'
         click_button 'Create New User'
-
-        expect(page).to have_content("Password confirmation doesn't match Password")
       end
+      
+      expect(page).to have_content("Passwords do not match")
+    end
+  end
 
+  describe "Log out a user" do
+    it "can log out a user" do  
+      user = User.create!(name: 'John Doe', email: 'tester@gmail.com', password: 'password123', password_confirmation: 'password123')
+      visit login_path
+      fill_in :email, with: user.email
+      fill_in :password, with: user.password
+      click_button "Log In"
+      
+      expect(current_path).to eq(user_path(user))
+      visit root_path
+      expect(page).to have_link("Log Out")
+      click_link "Log Out"
+      expect(current_path).to eq(root_path)
+      expect(page).to have_content("Login")
+      expect(page).to have_button("Create a New User")
     end
   end
 end
