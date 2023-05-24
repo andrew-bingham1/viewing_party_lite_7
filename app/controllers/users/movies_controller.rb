@@ -1,12 +1,17 @@
 class Users::MoviesController < ApplicationController
+  before_action :find_user  
   def index
-    @user = User.find(params[:user_id])
     @facade = MoviesFacade.new(params)
   end
 
   def show
     @facade = MoviesFacade.new(params)
-    @user = User.find(params[:user_id])
+  end
+
+  private 
+
+  def find_user
+    @user = current_user
   end
 
 end

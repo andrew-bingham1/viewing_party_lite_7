@@ -1,5 +1,11 @@
 class Users::DiscoverController < ApplicationController
+  before_action :find_user
   def index
-    @user = User.find(params[:user_id])
+  end
+
+  private
+  
+  def find_user
+    @user = current_user
   end
 end

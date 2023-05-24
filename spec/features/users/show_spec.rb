@@ -15,11 +15,14 @@ RSpec.describe 'User Show Page', type: :feature do
     
     @viewing_party_user_4 = ViewingPartyUser.create!(user_id: @user_1.id, viewing_party_id: @viewing_party_2.id)
     @viewing_party_user_5 = ViewingPartyUser.create!(user_id: @user_3.id, viewing_party_id: @viewing_party_2.id)
-    visit user_path(@user_1)
+    
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
+    visit dashboard_path
   end
 
   describe "User Dashboard #5", :vcr do
     it "displays <User Name>'s Dashboard" do
+      
       within("#user-dashboard") do
         expect(page).to have_content("John Doe's Dashboard")
       end
@@ -30,7 +33,7 @@ RSpec.describe 'User Show Page', type: :feature do
       end
     end
     it "displays a section that lists viewing parties" do 
-      visit user_path(@user_1)
+      visit dashboard_path
 
       within("#user-viewing-parties") do
         expect(page).to have_selector("#image")
@@ -47,7 +50,7 @@ RSpec.describe 'User Show Page', type: :feature do
     it "clicking 'Discover Movies' redirects to user_discover_index_path " do
       within("#user-dashboard") do
         click_button("Discover Movies")
-        expect(current_path).to eq(user_discover_path(@user_1))
+        expect(current_path).to eq(discover_path)
       end
     end
   end

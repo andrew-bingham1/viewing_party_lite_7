@@ -21,7 +21,7 @@ RSpec.describe 'Login Page', type: :feature do
 
     click_button 'Log In'
 
-    expect(current_path).to eq(user_path(@user1))
+    expect(current_path).to eq(dashboard_path)
   end
 
   it 'will display an error message email is invalid' do

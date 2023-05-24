@@ -1,11 +1,12 @@
 class Users::ViewingPartyController < ApplicationController
+  before_action :find_user
+
   def new
     if current_user.nil?
       flash[:error] = 'You must be logged in to create a viewing party'
-      redirect_to user_movie_path(params[:user_id], params[:id])
+      redirect_to user_movie_path(@user, params[:id])
     else
       @facade = MoviesFacade.new(params)
-      @user = User.find(params[:user_id])
       @users = User.all_except_me(@user)
     end
   end
@@ -17,7 +18,7 @@ class Users::ViewingPartyController < ApplicationController
         params[:viewing_party][:user_ids].each do |user_id|
           ViewingPartyUser.create(user_id: user_id, viewing_party_id: @viewing_party.id)
         end
-        redirect_to user_path(params[:user_id])
+        redirect_to dashboard_path
       else
         flash[:error] = @viewing_party.errors.full_messages.to_sentence
         redirect_to user_new_viewing_party_path(params[:user_id], params[:id])
@@ -31,6 +32,10 @@ class Users::ViewingPartyController < ApplicationController
  
 
  private
+
+  def find_user
+    @user = current_user
+  end
 
   def viewing_party_params
     params.permit(:movie_id, :duration, :date, :start_time, :user_id)

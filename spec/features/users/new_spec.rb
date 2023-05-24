@@ -20,8 +20,8 @@ RSpec.describe 'Registration Page', type: :feature do
         fill_in :password_confirmation, with: 'password123'
         click_button 'Create New User'
       end
-
-      expect(current_path).to eq(user_path(User.last))
+      
+      expect(current_path).to eq(dashboard_path)
     end
 
     it 'will display an error message if name is left blank' do

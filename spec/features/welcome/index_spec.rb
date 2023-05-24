@@ -142,7 +142,7 @@ RSpec.describe 'Welcome Page', type: :feature do
       user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
 
       visit root_path
-      visit user_path(user1)
+      visit dashboard_path
 
       expect(current_path).to eq(root_path)
     end
@@ -151,7 +151,7 @@ RSpec.describe 'Welcome Page', type: :feature do
       user1 = User.create!(name: 'Joe Bob', email: 'bigbobby@gmail.com', password: 'password123', password_confirmation: 'password123')
 
       visit root_path
-      visit user_path(user1)
+      visit dashboard_path
 
       expect(page).to have_content('You must be logged in or registered to access your dashboard')
     end

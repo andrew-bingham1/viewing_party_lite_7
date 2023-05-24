@@ -1,7 +1,7 @@
 <div id='title' style="text-align: center;">
   <h3><%=@facade.specific_movie.title%></h3>
 
-<%=button_to "Discover Page", user_discover_path(@user), method: :get%>
+<%=button_to "Discover Page", discover_path, method: :get%>
 <br>
 <%= button_to "Create Viewing Party for #{@facade.specific_movie.title}", user_new_viewing_party_path(@user, @facade.specific_movie.id), method: :get%>
 </div>

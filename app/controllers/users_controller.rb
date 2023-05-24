@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     else
       if user.save 
         session[:user_id] = user.id
-        redirect_to user_path(user)
+        redirect_to dashboard_path
       else
         flash[:error] = user.errors.full_messages.to_sentence
         redirect_to register_path
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
       flash[:error] = "You must be logged in or registered to access your dashboard"
       redirect_to root_path
     else
-      @user = User.find(params[:id])
+      @user = current_user
       @hosted_parties = ViewingParty.find_hosted_parties(@user)
       @invited_parties = ViewingParty.find_invited_parties(@user)
     end
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
     else
       if user.authenticate(params[:password])
         session[:user_id] = user.id
-        redirect_to user_path(user)
+        redirect_to dashboard_path
       else
         flash[:error] = "Sorry, that password is incorrect"
         render :login_form

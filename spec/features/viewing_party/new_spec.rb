@@ -7,7 +7,7 @@ RSpec.describe 'New Viewing Party Page', type: :feature do
       @user_2 = User.create!(name: 'Alex Smith', email: 'Asmith@yahoo.com', password: 'password123', password_confirmation: 'password123')
       @user_3 = User.create!(name: 'Elvis Presley', email: 'kingofrock@yahoo.com', password: 'password123', password_confirmation: 'password123')
       @user_4 = User.create!(name: 'John Lennon', email: 'JLJL@yahoo.com', password: 'password123', password_confirmation: 'password123')
-
+      allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user_1)
       visit  user_new_viewing_party_path(@user_1, 238)
     end
     describe "Happy Path" do
@@ -47,7 +47,7 @@ RSpec.describe 'New Viewing Party Page', type: :feature do
         all(:checkbox)[1].check
         all(:checkbox)[2].check
         click_button "Create Party"
-        expect(current_path).to eq(user_path(@user_1))
+        expect(current_path).to eq(dashboard_path)
       end
 
       it "shows new event on dashboard" do
